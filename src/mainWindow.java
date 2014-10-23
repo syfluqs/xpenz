@@ -1,5 +1,11 @@
 
+import java.awt.Color;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,10 +45,7 @@ public class mainWindow extends javax.swing.JFrame {
         grandTotal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         grandtotalValue = new javax.swing.JLabel();
-        assetsPanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        assetsValue = new javax.swing.JLabel();
-        date = new javax.swing.JLabel();
+        dateLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -50,8 +53,6 @@ public class mainWindow extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -65,8 +66,13 @@ public class mainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("xpenx Money Manager");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
-        barChart.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Income vs Expenses: Current Month", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 0)));
+        barChart.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Income vs Expenses: Current Month", 0, 0, null, new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout barChartLayout = new javax.swing.GroupLayout(barChart);
         barChart.setLayout(barChartLayout);
@@ -76,7 +82,7 @@ public class mainWindow extends javax.swing.JFrame {
         );
         barChartLayout.setVerticalGroup(
             barChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 347, Short.MAX_VALUE)
+            .addGap(0, 345, Short.MAX_VALUE)
         );
 
         jToolBar1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
@@ -89,10 +95,11 @@ public class mainWindow extends javax.swing.JFrame {
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton1);
 
-        overviewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)), "Overview", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 0)));
+        overviewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Overview", 0, 0, null, new java.awt.Color(0, 0, 0)));
 
         jLabel1.setText("Grand Total");
 
+        grandtotalValue.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         grandtotalValue.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         javax.swing.GroupLayout grandTotalLayout = new javax.swing.GroupLayout(grandTotal);
@@ -103,7 +110,7 @@ public class mainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(grandtotalValue, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(grandtotalValue, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         grandTotalLayout.setVerticalGroup(
             grandTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,44 +119,20 @@ public class mainWindow extends javax.swing.JFrame {
                 .addComponent(grandtotalValue, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jLabel2.setText("Assets");
-
-        assetsValue.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-
-        javax.swing.GroupLayout assetsPanelLayout = new javax.swing.GroupLayout(assetsPanel);
-        assetsPanel.setLayout(assetsPanelLayout);
-        assetsPanelLayout.setHorizontalGroup(
-            assetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(assetsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
-                .addComponent(assetsValue, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        assetsPanelLayout.setVerticalGroup(
-            assetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, assetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(assetsValue, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
         javax.swing.GroupLayout overviewPanelLayout = new javax.swing.GroupLayout(overviewPanel);
         overviewPanel.setLayout(overviewPanelLayout);
         overviewPanelLayout.setHorizontalGroup(
             overviewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(grandTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(assetsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         overviewPanelLayout.setVerticalGroup(
             overviewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(overviewPanelLayout.createSequentialGroup()
                 .addComponent(grandTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
-                .addComponent(assetsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
-        date.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         jMenu1.setText("File");
 
@@ -173,10 +156,6 @@ public class mainWindow extends javax.swing.JFrame {
 
         jMenuItem4.setText("Budget Setup");
         jMenu2.add(jMenuItem4);
-        jMenu2.add(jSeparator1);
-
-        jMenuItem5.setText("Assets");
-        jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
 
@@ -230,15 +209,15 @@ public class mainWindow extends javax.swing.JFrame {
             .addComponent(overviewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-                    .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(4, 4, 4)
                 .addComponent(overviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -262,6 +241,46 @@ public class mainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
         new AboutWindow().setVisible(true);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        //reading trnsFile
+        try {
+            trnsFile.read();
+        } catch (IOException ex) {
+            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //populating date label
+        Calendar cal = new GregorianCalendar();
+        dateLabel.setText("Week "+cal.get(Calendar.WEEK_OF_YEAR)+", Today: "+cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR));
+        
+        jLabel1.setBackground(new Color(255,255,255,0));
+        grandtotalValue.setBackground(new Color(255,255,255,0));
+        
+        //calculating grand total
+        for (int i=1;i<=vars.lastIndex;i++)
+        {
+            try {
+                transaction.gTotal(transaction.trns[i].amount, transaction.trns[i].type, i);
+            } catch (IOException ex) {
+                Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        grandtotalValue.setText(""+vars.gTotal);
+        
+        //colorising Grand Total
+        if (vars.gTotal>=0)
+        {
+            grandTotal.setBackground(new Color(265,255,189));
+            grandtotalValue.setForeground(Color.GREEN);
+        }
+        else
+        {
+            grandTotal.setBackground(new Color(255,189,189));
+            grandtotalValue.setForeground(Color.RED);
+        }
+        
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -302,15 +321,12 @@ public class mainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel assetsPanel;
-    private javax.swing.JLabel assetsValue;
     private javax.swing.JPanel barChart;
-    private javax.swing.JLabel date;
+    private javax.swing.JLabel dateLabel;
     private javax.swing.JPanel grandTotal;
     private javax.swing.JLabel grandtotalValue;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -323,12 +339,10 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel overviewPanel;
     // End of variables declaration//GEN-END:variables
