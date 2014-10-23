@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Date;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,7 +14,7 @@ import java.io.IOException;
  *
  * @author roy
  * 
- * This class reads transaction values from {profile}/trans and populates transaction.trns
+ * This class manipulates trnsFile
  * the file contains csv of transactions in the order -> index,date,type,amount,category,number,notes
  * index always starts from 1
  */
@@ -22,10 +23,11 @@ public class trnsFile {
     
     public static void read() throws FileNotFoundException, IOException
     {
+        //trnsFile.read() populates the transaction.trns[] array
         int i=1;
         String l;
         String profile = vars.selectedProfileName;
-        BufferedReader trnRead = new BufferedReader(new FileReader("dat/profiles.d/"+profile+"/trans"));
+        BufferedReader trnRead = new BufferedReader(new FileReader(vars.datd+vars.profilesd+profile+"/"+vars.trnsFile));
         while((l=trnRead.readLine())!=null)
         {
             //parsing csv
@@ -34,7 +36,8 @@ public class trnsFile {
             if (tmp.length!=7)
                 throw new IOException("The transaction storage file has corrupt values on line "+i);
             //making new transaction objects for each line
-            transaction.add(new transaction(Integer.parseInt(tmp[0]),(String)tmp[1],(String)tmp[2],Double.parseDouble(tmp[3]),(String)tmp[4],Long.parseLong(tmp[5]),(String)tmp[6]));
+            String[] dateArr = tmp[1].split("-");
+            transaction.add(new transaction(Integer.parseInt(tmp[0]),new Date(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0])),(String)tmp[2],Double.parseDouble(tmp[3]),(String)tmp[4],tmp[5].equals("")?0000:Long.parseLong(tmp[5]),(String)tmp[6]));
             //incrementing line number
             i++;
         }

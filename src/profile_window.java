@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -34,7 +35,7 @@ public class profile_window extends javax.swing.JFrame {
     
     public profile_window() throws FileNotFoundException, URISyntaxException, IOException {
         //accessing profiles
-        BufferedReader br = new BufferedReader(new FileReader("dat/profiles"));
+        BufferedReader br = new BufferedReader(new FileReader(vars.datd+vars.profileFile));
         String line=""; int i=0;
         //populating profiles array
         while((line=br.readLine())!=null)
@@ -47,6 +48,10 @@ public class profile_window extends javax.swing.JFrame {
         System.out.println("setting background - "+backs[n]);
         background.setIcon(new ImageIcon(getClass().getResource(backs[n])));
 
+        //centering the window
+        setLocationRelativeTo(null);
+        
+        profile_select.setBackground(new Color(0,0,0,128));
     }
 
     /**
@@ -89,6 +94,8 @@ public class profile_window extends javax.swing.JFrame {
 
         profile_select.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Select a profile:");
 
         profileBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " " }));
@@ -116,21 +123,17 @@ public class profile_window extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(profileBox, 0, 315, Short.MAX_VALUE)
+                .addComponent(profileBox, 0, 253, Short.MAX_VALUE)
                 .addContainerGap())
         );
         profile_selectLayout.setVerticalGroup(
             profile_selectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, profile_selectLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(profile_selectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(profileBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38))
+            .addComponent(profileBox, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getContentPane().add(profile_select);
-        profile_select.setBounds(10, 420, 420, 40);
+        profile_select.setBounds(10, 410, 420, 30);
 
         jLabel3.setFont(new java.awt.Font("Agency FB", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
@@ -160,7 +163,6 @@ public class profile_window extends javax.swing.JFrame {
 
     private void profileBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileBoxActionPerformed
         // TODO add your handling code here:
-        System.out.println("action");
         vars.setSelectedProfile(profileBox.getSelectedIndex(), (String) profileBox.getSelectedItem());
         pw.setVisible(false);
         new mainWindow().setVisible(true);

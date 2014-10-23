@@ -1,5 +1,7 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -12,7 +14,7 @@ public class transaction {
     
     public int i;
     public int index;
-    public String date;
+    public Date date;
     public String type;
     public double amount;
     public String category;
@@ -20,12 +22,12 @@ public class transaction {
     public String notes;
     
     
-    static public transaction[] trns = {new transaction(0,"99-99-9999","abc",999.99,"abc",999999,"abc")}; //defining a sample transaction. use transaction index from 1 only.
+    static public transaction[] trns = {new transaction(0,new Date(0,0,0),"abc",999.99,"abc",999999,"abc")}; //defining a sample transaction. use transaction index from 1 only.
     
-    public transaction(int index,String date, String type, double amount, String category, long number, String notes)
+    public transaction(int index,Date date, String type, double amount, String category, long number, String notes)
     {
         this.index=index;
-        this.date=date;
+        this.date=date; //using deprecated java.util.Date to save hassles
         this.type=type;
         this.amount=amount;
         this.category=category;
@@ -37,15 +39,12 @@ public class transaction {
     static public void add(transaction t)
     {
         int s = trns.length;
-        System.out.println("trns.length="+s);
         transaction[] tmp = new transaction[s+1];
         for (int i=0;i<s;i++)
         {
             tmp[i]=trns[i];
-            System.out.println(tmp[i].amount);
         }
         tmp[s]=t;
-        System.out.println(t.amount);
         trns = new transaction[s+1];
         trns=tmp;
         vars.updatelastIndex();
@@ -56,8 +55,18 @@ public class transaction {
         //method to dump all transactions data to system out. just for debuggin purposes
         for (int i=0;i<trns.length;i++)
         {
-            System.out.println("i="+i+" -> "+trns[i].amount+" "+trns[i].category+" "+trns[i].date+" "+trns[i].type+" "+trns[i].number+" "+trns[i].notes+"\n--------------------");
+            System.out.println("i="+i+" -> "+trns[i].amount+" "+trns[i].category+" "+trns[i].date.toString()+" "+trns[i].type+" "+trns[i].number+" "+trns[i].notes);
         }
+    }
+    
+    static public void gTotal(double amt,String type,int i) throws IOException
+    {
+        if (type.equals("Deposit"))
+                vars.gTotal+=amt;
+            else if (type.equals("Withdrawal"))
+                vars.gTotal-=amt;
+            else
+                throw new IOException("Invalid type in trnsFile line "+i);
     }
 
 }

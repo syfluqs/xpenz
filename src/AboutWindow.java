@@ -26,7 +26,7 @@ public class AboutWindow extends javax.swing.JFrame {
     
     public AboutWindow() {
         initComponents();
-        
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -72,7 +72,7 @@ private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:ev
 
 private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
 // TODO add your handling code here:
-    ab.setVisible(false);
+    dispose();
 }//GEN-LAST:event_backMouseClicked
 
     /**
@@ -107,11 +107,11 @@ private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
             public void run() {
                 
                 //centering window
-                Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();      
-                int x=(int)((dimension.getWidth() - 450)/2);
-                int y=(int)((dimension.getHeight() - 450)/2);
+                //Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();      
+                //int x=(int)((dimension.getWidth() - 450)/2);
+                //int y=(int)((dimension.getHeight() - 450)/2);
                 ab.setVisible(true);
-                ab.setLocation(x, y);
+                
             }
         });
     }
