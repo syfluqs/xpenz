@@ -60,7 +60,7 @@ public class vars {
     
     //reminders
     static boolean reminders = true;
-    static int remPercent = 85;
+    static int remPercent = 500;
     
     //scrren width and hieght
     static Dimension dm = Toolkit.getDefaultToolkit().getScreenSize();
