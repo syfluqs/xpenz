@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -44,6 +45,12 @@ public class vars {
     
     //settings window active tab
     static int activeTab = 1;
+    //newTrans mode
+    static boolean newTrnsEditMode = false;
+    //index to edit
+    static int indexToEdit = -1;
+    //index to delete
+    static int indexToDelete = -1;
     
     //date format
     static String dateFormat = "dd-MM-yyyy";
@@ -60,13 +67,25 @@ public class vars {
     static int sW = dm.width;
     static int sH = dm.height;
 
-    //current week
+    //current date variables
     static int week;
+    static int date;
+    static int month;
+    static int year;
+    
+    //items in weekOverview, expenseOverview, incomeOverview
+    static ArrayList wOi = new ArrayList();
+    static ArrayList eOi = new ArrayList();
+    static ArrayList iOi = new ArrayList();
+    
+    //report
+    static int report = 0;
+    static String reportFrom = "";
+    static String reportTo = "";
     
     static public void updatelastIndex()
     {
         lastIndex = transaction.trns.length-1;
-        System.out.println("vars.lastIndex="+lastIndex);
     }
     
     static public void setSelectedProfile(int i,String prof)
@@ -85,9 +104,68 @@ public class vars {
         dateFormat = d;
     }
     
-    static public void setCurWeek(int i)
+    static public void setCurDateVars(int d,int m,int y,int w)
     {
-        week = i;
+        week = w;
+        date = d;
+        month = m;
+        year = y;
+    }
+    
+    static public void setEditMode(boolean b)
+    {
+        newTrnsEditMode = b;
+    }
+    
+    static public void setIndexToEdit(int n)
+    {
+        indexToEdit = n;
+    }
+    
+    static public void setIndexToDelete(int n)
+    {
+        indexToDelete = n;
+    }
+    
+    static public void addeOi(int n)
+    {
+        eOi.add(n);
+    }
+    
+    static public void addiOi(int n)
+    {
+        iOi.add(n);
+    }
+    
+    static public void addwOi(int n)
+    {
+        wOi.add(n);
+    }
+    
+    static public void reseteOi()
+    {
+        eOi = new ArrayList();
+    }
+    
+    static public void resetiOi()
+    {
+        iOi = new ArrayList();
+    }
+    
+    static public void resetwOi()
+    {
+        wOi = new ArrayList();
+    }
+    
+    static public void setReportDate(String from,String to)
+    {
+        reportTo = to;
+        reportFrom = from;
+    }
+    
+    static public void setReportType(int i)
+    {
+        report = i;
     }
     
     static public void init() throws FileNotFoundException, IOException

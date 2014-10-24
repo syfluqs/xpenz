@@ -45,9 +45,9 @@ public class trnsFile {
         transaction.dump();
     }
     
-    public static void write()
+    public static void write() throws IOException
     {
-        
+        transaction.write();
     }
     
 }

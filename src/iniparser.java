@@ -88,12 +88,12 @@ public class iniparser {
          return property;
      }
     
-     static void iniwrite(String file, String section , String value , String property) throws IOException
+     static void iniwrite(String file, String line, boolean append) throws IOException
      {
          
-         BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-         
-         System.err.println("iniwrite -> method not implemented yet.");
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file,append));
+        bw.write(line);
+        bw.close();
          
      }
 }

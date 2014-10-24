@@ -8,6 +8,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -69,6 +71,7 @@ public class profile_window extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         profile_select = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         profileBox = new javax.swing.JComboBox();
@@ -96,19 +99,27 @@ public class profile_window extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Restart is needed for changes to take effect");
+
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
         jDialog1Layout.setHorizontalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialog1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jDialog1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addGap(0, 0, 0)
+                        .addComponent(jButton2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jDialog1Layout.setVerticalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,7 +131,9 @@ public class profile_window extends javax.swing.JFrame {
                     .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -135,18 +148,18 @@ public class profile_window extends javax.swing.JFrame {
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
         getContentPane().setLayout(null);
 
         profile_select.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 14));
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Select a profile:");
 
@@ -187,7 +200,7 @@ public class profile_window extends javax.swing.JFrame {
         getContentPane().add(profile_select);
         profile_select.setBounds(10, 410, 420, 30);
 
-        jLabel3.setFont(new java.awt.Font("Agency FB", 0, 24));
+        jLabel3.setFont(new java.awt.Font("Agency FB", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("by Team Black Hats");
@@ -217,25 +230,28 @@ public class profile_window extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (profileBox.getSelectedIndex()==0)
         {
+            jDialog1.setBounds((vars.sW-454)/2, (vars.sH-65)/2, 454, 65);
             jDialog1.setVisible(true);
-            jDialog1.setBounds((vars.sW-402)/2, (vars.sH-41)/2, 402, 41);
         }
         else
         {
         vars.setSelectedProfile(profileBox.getSelectedIndex(), (String) profileBox.getSelectedItem());
-        pw.setVisible(false);
+        dispose();
             try {
-                new mainWindow().setVisible(true);
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+                //creating mainWindow mw object
+                mainWindow.createmw();
+            } catch (IOException ex) { Logger.getLogger(profile_window.class.getName()).log(Level.SEVERE, null, ex);}
+        mainWindow.mw.setVisible(true);
         }
     }//GEN-LAST:event_profileBoxActionPerformed
 
 private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
- 
+//populating combobox
+    int i=0;
+    while(i<profiles.size())
+    {
+        profileBox.addItem(profiles.get(i)); i++;
+    } 
 }//GEN-LAST:event_formWindowOpened
 
 private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
@@ -244,12 +260,7 @@ private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:
 
 private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
 // TODO add your handling code here:
-    //populating combobox
-    int i=0;
-    while(i<profiles.size())
-    {
-        profileBox.addItem(profiles.get(i)); i++;
-    }
+    
 }//GEN-LAST:event_formWindowActivated
 
 private void profileBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_profileBoxItemStateChanged
@@ -266,15 +277,20 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 // TODO add your handling code here:
     if (!jTextField1.getText().equals(""))
     {
+        try {
+            createNewProfile.create(jTextField1.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(profile_window.class.getName()).log(Level.SEVERE, null, ex);
+        }
         jTextField1.setText("");
-        
+        jDialog1.dispose();
     }
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 // TODO add your handling code here:
     jTextField1.setText("");
-    jDialog1.setVisible(false);
+    jDialog1.dispose();
 }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -326,6 +342,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JComboBox profileBox;

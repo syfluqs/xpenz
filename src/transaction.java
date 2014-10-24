@@ -1,7 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -20,7 +19,6 @@ public class transaction {
     public String category;
     public long number;
     public String notes;
-    
     
     static public transaction[] trns = {new transaction(0,"99-99-9999","abc",999.99,"abc",999999,"abc")}; //defining a sample transaction. use transaction index from 1 only.
     
@@ -50,6 +48,43 @@ public class transaction {
         vars.updatelastIndex();
     }
     
+    static public void edit(int a,transaction t)
+    {
+        int s = trns.length;
+        transaction[] tmp = new transaction[s];
+        for (int i=0;i<a;i++)
+        {
+            tmp[i]=trns[i];
+        }
+        tmp[a]=t;
+        for (int i=a+1;i<s;i++)
+        {
+            tmp[i]=trns[i];
+        }
+        trns = new transaction[s];
+        trns=tmp;
+        vars.updatelastIndex();
+    }
+    
+    static public void delete(int a)
+    {
+        System.out.println(a);
+        int s = trns.length;
+        transaction[] tmp = new transaction[s-1];
+        for (int i=0;i<a;i++)
+        {
+            tmp[i]=trns[i];
+        }
+        for (int i=a;i<s-1;i++)
+        {
+            tmp[i]=trns[i];
+        }
+        trns = new transaction[s-1];
+        trns=tmp;
+        vars.updatelastIndex();
+        System.out.println(tmp.toString());
+    }
+    
     static public void dump()
     {
         //method to dump all transactions data to system out. just for debuggin purposes
@@ -59,14 +94,36 @@ public class transaction {
         }
     }
     
-    static public void gTotal(double amt,String type,int i) throws IOException
+    static public void gTotal(char c,double amt,String type,int i) throws IOException
     {
-        if (type.equals("Deposit"))
+        if (c=='c')
+        {
+            if (type.equals("Deposit"))
                 vars.gTotal+=amt;
             else if (type.equals("Withdrawal"))
                 vars.gTotal-=amt;
             else
                 throw new IOException("Invalid type in trnsFile line "+i);
+        }
+        else
+        {
+            vars.gTotal=0;
+        }
+    }
+    
+    static public void write() throws IOException
+    {
+    BufferedWriter trnsWriter = new BufferedWriter(new FileWriter(vars.datd+vars.profilesd+vars.selectedProfileName+"/"+vars.trnsFile));
+    for (int i=1;i<=vars.lastIndex;i++)
+    {
+        String notes;
+        if (trns[i].notes.equals(""))
+            notes = " ";
+        else
+            notes = trns[i].notes;
+        trnsWriter.write(""+i+vars.csvDelimiter+trns[i].date+vars.csvDelimiter+trns[i].type+vars.csvDelimiter+trns[i].amount+vars.csvDelimiter+trns[i].category+vars.csvDelimiter+trns[i].number+vars.csvDelimiter+notes+"\n");
+    }
+    trnsWriter.close();
     }
 
 }

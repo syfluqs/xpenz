@@ -1,8 +1,11 @@
 
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,6 +31,14 @@ public class mainWindow extends javax.swing.JFrame {
     
     static public mainWindow mw;
     SimpleDateFormat df = new SimpleDateFormat(vars.dateFormat);
+    static newTrans nt = new newTrans();
+    static AboutWindow ab = new AboutWindow();
+    static String dMsg = "Sure to delete selected transaction?";
+    
+    Calendar cal = new GregorianCalendar();
+    Calendar cal2 = new GregorianCalendar();
+    
+    static String csvFile = "";
     
     public mainWindow() throws FileNotFoundException, IOException {
         initComponents();
@@ -45,6 +56,15 @@ public class mainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jLabel3 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jFrame1 = new javax.swing.JFrame();
+        jFileChooser1 = new javax.swing.JFileChooser();
+        alert = new javax.swing.JDialog();
+        jLabel4 = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
         barChart = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         incomeOverview = new javax.swing.JTable();
@@ -52,6 +72,10 @@ public class mainWindow extends javax.swing.JFrame {
         expenseOverview = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         overviewPanel = new javax.swing.JPanel();
         grandTotal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -64,22 +88,128 @@ public class mainWindow extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
 
+        jDialog1.setAlwaysOnTop(true);
+        jDialog1.setUndecorated(true);
+        jDialog1.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                jDialog1WindowOpened(evt);
+            }
+        });
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jButton6.setText("OK");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("Cancel");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jDialog1Layout.createSequentialGroup()
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
+                        .addComponent(jButton7)))
+                .addContainerGap())
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6)
+                    .addComponent(jButton7))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jFrame1.setTitle("Select file ");
+        jFrame1.setAlwaysOnTop(true);
+        jFrame1.setMinimumSize(new java.awt.Dimension(517, 326));
+
+        jFileChooser1.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        jFileChooser1.setApproveButtonText("Export");
+        jFileChooser1.setDialogTitle("Export to CSV");
+        jFileChooser1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFileChooser1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+                .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jLabel4.setText("Your funds have reached the specified limit.");
+
+        jButton8.setText("OK");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout alertLayout = new javax.swing.GroupLayout(alert.getContentPane());
+        alert.getContentPane().setLayout(alertLayout);
+        alertLayout.setHorizontalGroup(
+            alertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(alertLayout.createSequentialGroup()
+                .addGroup(alertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(alertLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4))
+                    .addGroup(alertLayout.createSequentialGroup()
+                        .addGap(134, 134, 134)
+                        .addComponent(jButton8)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        alertLayout.setVerticalGroup(
+            alertLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(alertLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton8)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("xpenx Money Manager");
+        setMinimumSize(new java.awt.Dimension(828, 745));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -105,6 +235,7 @@ public class mainWindow extends javax.swing.JFrame {
 
             }
         ));
+        incomeOverview.setRowSelectionAllowed(false);
         jScrollPane2.setViewportView(incomeOverview);
 
         barChart.add(jScrollPane2);
@@ -117,33 +248,15 @@ public class mainWindow extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Amount", "Category"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Double.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
+        expenseOverview.setRowSelectionAllowed(false);
         jScrollPane3.setViewportView(expenseOverview);
-        expenseOverview.getColumnModel().getColumn(0).setResizable(false);
-        expenseOverview.getColumnModel().getColumn(1).setResizable(false);
-        expenseOverview.getColumnModel().getColumn(2).setResizable(false);
 
         barChart.add(jScrollPane3);
 
         jToolBar1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         jButton1.setText("New Transaction");
@@ -157,12 +270,56 @@ public class mainWindow extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton1);
 
+        jButton2.setText("Save");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton2);
+
+        jButton3.setText("Refresh");
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton3);
+
+        jButton4.setText("Edit Transaction");
+        jButton4.setFocusable(false);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton4);
+
+        jButton5.setText("Delete Transaction");
+        jButton5.setFocusable(false);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton5);
+
         overviewPanel.setBackground(new java.awt.Color(255, 255, 255));
         overviewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Overview", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setText("Grand Total");
+        jLabel1.setText("Grand Total (for current month)");
 
-        grandtotalValue.setFont(new java.awt.Font("SansSerif", 1, 12));
+        grandtotalValue.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         grandtotalValue.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         javax.swing.GroupLayout grandTotalLayout = new javax.swing.GroupLayout(grandTotal);
@@ -172,7 +329,7 @@ public class mainWindow extends javax.swing.JFrame {
             .addGroup(grandTotalLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(grandtotalValue, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         grandTotalLayout.setVerticalGroup(
@@ -194,7 +351,7 @@ public class mainWindow extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(weekOverview);
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 14));
+        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("This Week");
 
@@ -202,14 +359,13 @@ public class mainWindow extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
         );
@@ -233,13 +389,21 @@ public class mainWindow extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("New");
+        jMenuItem1.setText("New Transaction");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
         jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Export to CSV(Excel)");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -253,14 +417,6 @@ public class mainWindow extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem3);
 
-        jMenuItem4.setText("Budget Setup");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem4);
-
         jMenuItem5.setText("Settings");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -273,25 +429,17 @@ public class mainWindow extends javax.swing.JFrame {
 
         jMenu4.setText("Reports");
 
-        jMenuItem6.setText("Daily");
+        jMenuItem6.setText("Category Wise");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem6);
-
-        jMenuItem7.setText("Weekly");
-        jMenu4.add(jMenuItem7);
-
-        jMenuItem9.setText("Monthly");
-        jMenu4.add(jMenuItem9);
-
-        jMenuItem8.setText("Yearly");
-        jMenu4.add(jMenuItem8);
 
         jMenuBar1.add(jMenu4);
 
         jMenu3.setText("Help");
-
-        jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        jMenuItem10.setText("Help");
-        jMenu3.add(jMenuItem10);
 
         jMenuItem11.setText("README");
         jMenu3.add(jMenuItem11);
@@ -317,7 +465,7 @@ public class mainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(barChart, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
+            .addComponent(barChart, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(overviewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -329,7 +477,7 @@ public class mainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, Short.MAX_VALUE)
                     .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(4, 4, 4)
                 .addComponent(overviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -342,6 +490,10 @@ public class mainWindow extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        if (nt.isVisible())
+         { nt.toFront(); nt.repaint(); }
+        else
+            nt.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem12MouseClicked
@@ -351,7 +503,10 @@ public class mainWindow extends javax.swing.JFrame {
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         // TODO add your handling code here:
-        new AboutWindow().setVisible(true);
+        if (ab.isVisible())
+         { ab.toFront(); ab.repaint(); }
+        else
+            ab.setVisible(true);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -360,7 +515,10 @@ public class mainWindow extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new newTrans().setVisible(true);
+        if (nt.isVisible())
+         { nt.toFront(); nt.repaint(); }
+        else
+            nt.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -371,69 +529,24 @@ public class mainWindow extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //populating date label
-        Calendar cal = new GregorianCalendar();
-        //setting current week
-        vars.setCurWeek(cal.get(Calendar.WEEK_OF_YEAR));
-        dateLabel.setText("Week "+vars.week+", Today: "+cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR));
-        
+
         jLabel1.setBackground(new Color(255,255,255,0));
         grandtotalValue.setBackground(new Color(255,255,255,0));
         
-        //calculating grand total
-        for (int i=1;i<=vars.lastIndex;i++)
-        {
-            try {
-                transaction.gTotal(transaction.trns[i].amount, transaction.trns[i].type, i);
-            } catch (IOException ex) {
-                Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        grandtotalValue.setText("Rs. "+vars.gTotal);
-        
-        //colorising Grand Total
-        if (vars.gTotal>=0)
-        {
-            grandTotal.setBackground(new Color(226,255,189));
-            grandtotalValue.setForeground(new Color(67,119,0));
-        }
-        else
-        {
-            grandTotal.setBackground(new Color(255,189,189));
-            grandtotalValue.setForeground(Color.RED);
+        try {
+            //populating everything
+            populate();
+        } catch (IOException ex) {
+            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //populating weekOverview table
-        DefaultTableModel wOtm = new DefaultTableModel(0,0);
-        weekOverview.setModel(wOtm);
-        //add headeer of the table
-        String header[] = new String[] { "Date", "Type", "Amount", "Category", "Number", "Notes" };
-        //add header in table model
-        wOtm.setColumnIdentifiers(header);
-        
-        for (int i=1;i<=vars.lastIndex;i++)
+        if (vars.gTotal<vars.remPercent)
         {
-            try { cal.setTime(df.parse(transaction.trns[i].date)); } catch (ParseException ex) {}
-            if (cal.get(Calendar.WEEK_OF_YEAR)==vars.week)
-            {
-                    /*
-                    row.add(transaction.trns[i].date);
-                    row.add(transaction.trns[i].type);
-                    row.add(transaction.trns[i].amount);
-                    row.add(transaction.trns[i].category);
-                    row.add(transaction.trns[i].number);
-                    row.add(transaction.trns[i].notes);
-                    System.out.println(row.toArray()[2]);
-                    */
-                    wOtm.addRow(new Object[]{transaction.trns[i].date,transaction.trns[i].type,transaction.trns[i].amount,transaction.trns[i].category,transaction.trns[i].number,transaction.trns[i].notes,});
-                    weekOverview.updateUI();
+            alert.setBounds((vars.sW-335)/2,(vars.sH-70)/2,335,70);
+            alert.setVisible(true);
         }
-        }
-        
-        //populating incomeView
-        DefaultTableModel iOtm = new DefaultTableModel(0,0);
-        incomeOverview.setModel(iOtm);
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -441,11 +554,7 @@ public class mainWindow extends javax.swing.JFrame {
         vars.setActiveTab(2);
         try {
             new settings().setVisible(true);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        } catch (FileNotFoundException ex) {} catch (IOException ex) {}
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
 private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -453,24 +562,103 @@ private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     vars.setActiveTab(0);
         try {
             new settings().setVisible(true);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        } catch (FileNotFoundException ex) {} catch (IOException ex) {}
 }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-// TODO add your handling code here:
-    vars.setActiveTab(4);
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            new settings().setVisible(true);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            transaction.write();
+        } catch (IOException ex) { Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex); }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            // TODO add your handling code here:
+            populate();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-}//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        if (weekOverview.getSelectedRow()!=-1)
+        {
+            vars.setIndexToEdit((int) vars.wOi.get(weekOverview.getSelectedRow()));
+            vars.setEditMode(true);
+        }
+        newTrans ntedit = new newTrans();
+        ntedit.setVisible(true);
+        ntedit.settitle("Edit Transaction");
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        if (weekOverview.getSelectedRow()!=-1)
+        {
+        jDialog1.setBounds((vars.sW-406)/2, (vars.sH-87)/2, 406, 87);
+        vars.setIndexToDelete((int) vars.wOi.get(weekOverview.getSelectedRow()));
+        jDialog1.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jDialog1WindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_jDialog1WindowOpened
+        // TODO add your handling code here:
+        jLabel3.setText(dMsg);
+    }//GEN-LAST:event_jDialog1WindowOpened
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        jDialog1.setVisible(false);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        transaction.delete(vars.indexToDelete);
+        try {
+            populate();
+        } catch (IOException ex) {
+            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jDialog1.setVisible(false);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        //exporting all data to CSV
+        jFrame1.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
+        // TODO add your handling code here:
+        csvFile = jFileChooser1.getSelectedFile().getAbsolutePath()+".csv";
+        System.out.print("csvFile at "+csvFile);
+        try {
+            //BufferedWriter bw = new BufferedWriter(new FileWriter(csvFile,true));
+            iniparser.iniwrite(csvFile,"S No.,Date,Amount,Type,Category,Transaction Number,Notes\n",true);
+            for (int i=1;i<=vars.lastIndex;i++)
+            {
+                System.out.println(i);
+                iniparser.iniwrite(csvFile,""+i+","+transaction.trns[i].date+","+transaction.trns[i].amount+","+transaction.trns[i].type+","+transaction.trns[i].category+","+transaction.trns[i].number+","+transaction.trns[i].notes+"\n",true);
+            }
+        } catch (IOException ex) { Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex); }
+        jFrame1.dispose();
+    }//GEN-LAST:event_jFileChooser1ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        new report().setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        alert.dispose();
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -502,21 +690,113 @@ private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    mw = new mainWindow();
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
                 mw.setVisible(true);
-                
-                //populating date label
             }
         });
     }
+    
+    public void populate() throws IOException, ParseException
+    {
+        //populating date label
+        //setting current date variables
+        vars.setCurDateVars(cal.get(Calendar.DATE),(cal.get(Calendar.MONTH)+1),cal.get(Calendar.YEAR),cal.get(Calendar.WEEK_OF_YEAR));
+        dateLabel.setText("Week "+vars.week+", Today: "+cal.get(Calendar.DAY_OF_MONTH)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.YEAR));
+        
+        //calculating grand total for current month
+        transaction.gTotal('r', 00, null, 00);  //first resetting gTotal
+        for (int i=1;i<=vars.lastIndex;i++)
+        {
+            try {
+                cal2.setTime(df.parse(transaction.trns[i].date));
+                if ((cal2.get(Calendar.MONTH)+1)==vars.month)
+                    transaction.gTotal('c',transaction.trns[i].amount, transaction.trns[i].type, i);
+            } catch (IOException ex) {
+                Logger.getLogger(mainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        grandtotalValue.setText("Rs. "+vars.gTotal);
 
+        //colorising Grand Total
+        if (vars.gTotal>=0)
+        {
+            grandTotal.setBackground(new Color(226,255,189));
+            grandtotalValue.setForeground(new Color(67,119,0));
+        }
+        else
+        {
+            grandTotal.setBackground(new Color(255,189,189));
+            grandtotalValue.setForeground(Color.RED);
+        }
+        
+        //populating weekOverview table
+        DefaultTableModel wOtm = new DefaultTableModel(0,0);
+        weekOverview.setModel(wOtm);
+        //add header of the table
+        String wOheader[] = new String[] { "Date", "Type", "Amount", "Category", "Number", "Notes" };
+        //add header in table model
+        wOtm.setColumnIdentifiers(wOheader);
+        //resetting wOi
+        vars.resetwOi();
+        
+        for (int i=1;i<=vars.lastIndex;i++)
+        {
+            try { cal2.setTime(df.parse(transaction.trns[i].date)); } catch (ParseException ex) {}
+            if (cal2.get(Calendar.WEEK_OF_YEAR)==vars.week&&cal2.get(Calendar.YEAR)==vars.year)
+            {
+                    wOtm.addRow(new Object[]{transaction.trns[i].date,transaction.trns[i].type,transaction.trns[i].amount,transaction.trns[i].category,transaction.trns[i].number,transaction.trns[i].notes,});
+                    weekOverview.updateUI();
+                    vars.addwOi(i);
+            }
+        }
+        
+        //populating incomeView
+        DefaultTableModel iOtm = new DefaultTableModel(0,0);
+        incomeOverview.setModel(iOtm);
+        String iOheader[] = new String[] {"Date","Amount","Category"};
+        iOtm.setColumnIdentifiers(iOheader);
+        vars.resetiOi();
+        for (int i=1;i<=vars.lastIndex;i++)
+        {
+            try { cal2.setTime(df.parse(transaction.trns[i].date)); } catch (ParseException ex) {}
+            if ((cal2.get(Calendar.MONTH)+1)==vars.month && cal2.get(Calendar.YEAR)==vars.year && transaction.trns[i].type.equals("Deposit"))
+            {
+                iOtm.addRow(new Object[]{transaction.trns[i].date,transaction.trns[i].amount,transaction.trns[i].category});
+                incomeOverview.updateUI();
+                vars.addiOi(i);
+            }
+        }
+        
+        //populating expenseView
+        DefaultTableModel eOtm = new DefaultTableModel(0,0);
+        expenseOverview.setModel(eOtm);
+        String eOheader[] = new String[] {"Date","Amount","Category"};
+        eOtm.setColumnIdentifiers(eOheader);
+        vars.reseteOi();
+        for (int i=1;i<=vars.lastIndex;i++)
+        {
+            try { cal2.setTime(df.parse(transaction.trns[i].date)); } catch (ParseException ex) {}
+            if ((cal2.get(Calendar.MONTH)+1)==vars.month && cal2.get(Calendar.YEAR)==vars.year && transaction.trns[i].type.equals("Withdrawal"))
+            {
+                eOtm.addRow(new Object[]{transaction.trns[i].date,transaction.trns[i].amount,transaction.trns[i].category});
+                expenseOverview.updateUI();
+                vars.addeOi(i);
+            }
+        }
+    }
+
+    static void createmw() throws IOException
+    {
+        mw = new mainWindow();
+    }
+    
+public class WindowEventHandler extends WindowAdapter {
+    public void windowClosing(WindowEvent evt) {
+        System.out.println("Call your method here"); 
+  }
+}
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog alert;
     private javax.swing.JPanel barChart;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JTable expenseOverview;
@@ -524,24 +804,32 @@ private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JLabel grandtotalValue;
     private javax.swing.JTable incomeOverview;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

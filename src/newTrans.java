@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -6,7 +5,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +30,28 @@ public class newTrans extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         jLabel2.setText("(Format:"+vars.dateFormat+")");
+        
+        try {
+            //populating category combobox
+            BufferedReader br = new BufferedReader(new FileReader(vars.datd+vars.catFile));
+            String line;
+            while((line=br.readLine())!=null)
+                cat.addItem(line);
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(newTrans.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(newTrans.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        date.setText("");
+        amt.setText("");
+        dueDate.setText("");
+        errLabel.setText("");
+        notes.setText("");
+        number.setText("");
+        
+        
     }
 
     /** This method is called from within the constructor to
@@ -68,11 +88,14 @@ public class newTrans extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         errLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(446, 405));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -149,7 +172,7 @@ public class newTrans extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addGap(18, 18, 18)
                             .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                             .addComponent(jLabel2)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -258,11 +281,20 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     // TODO add your handling code here:
     //checking validity of date
     SimpleDateFormat df = new SimpleDateFormat(vars.dateFormat);
-    try { 
+    try {
         df.setLenient(false);
         df.parse(date.getText());
-        transaction t = new transaction(vars.lastIndex,date.getText(),type.getSelectedItem().toString(),Double.parseDouble(amt.getText()),cat.getSelectedItem().toString(),Long.parseLong(number.getText()),notes.getText());
-        transaction.add(t);
+        Long n;
+        if (number.getText().equals(""))
+            n=0L;
+        else
+            n=Long.parseLong(number.getText());
+        transaction t = new transaction(vars.lastIndex,date.getText(),type.getSelectedItem().toString(),Double.parseDouble(amt.getText()),cat.getSelectedItem().toString(),n,notes.getText());
+        //check if opened in edit mode
+        if (vars.newTrnsEditMode)
+            transaction.edit(vars.indexToEdit, t);
+        else
+            transaction.add(t);
         
     } catch (ParseException p)
     {
@@ -275,6 +307,15 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         errLabel.setText("Error in input. Try again.");
     }
     
+        try {
+            mainWindow.mw.populate();
+        } catch (IOException ex) {
+            Logger.getLogger(newTrans.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(newTrans.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    vars.setEditMode(false);
     dispose();
     
     //String[] dateArr = date.getText().split("-");
@@ -284,27 +325,14 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 // TODO add your handling code here:
+    vars.setEditMode(false);
     transaction.dump();
     dispose();
 }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
-        //populating the textfiled date
-        Calendar cal = new GregorianCalendar();
-        date.setText(""+cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR));
-        try {
-            //populating category combobox
-            BufferedReader br = new BufferedReader(new FileReader(vars.datd+vars.catFile));
-            String line;
-            while((line=br.readLine())!=null)
-                cat.addItem(line);
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(newTrans.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(newTrans.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_formWindowActivated
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -318,6 +346,38 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        
+        //first check if form is opened in editor mode
+        if (vars.newTrnsEditMode)
+        {
+            //getting index to edit
+            if (vars.indexToEdit!=-1)
+            {
+                int i=vars.indexToEdit;
+                //editing mode. populating fields with values
+                date.setText(transaction.trns[i].date);
+                type.setSelectedItem(transaction.trns[i].type);
+                amt.setText(""+transaction.trns[i].amount);
+                cat.setSelectedItem(transaction.trns[i].category);
+                number.setText(""+transaction.trns[i].number);
+                notes.setText(transaction.trns[i].notes);
+            }
+            else
+            {
+                System.err.println("indexToEdit is Illegal");
+            }
+        }
+        else
+        {
+        //populating the textfield date
+        Calendar cal = new GregorianCalendar();
+        date.setText(""+cal.get(Calendar.DAY_OF_MONTH)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.YEAR));  //+1 because cal returns moths from 0
+        
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -353,6 +413,11 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 new newTrans().setVisible(true);
             }
         });
+    }
+    
+    public void settitle(String s)
+    {
+        setTitle(s);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField amt;
