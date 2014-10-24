@@ -2,10 +2,11 @@
 
 
 __by Team Black Hats__
-+ [Anshuman Chandel](https://www.facebook.com/anshuman.chandel1) , 1st year, Production and Manufacturing Engineering, PEC University of Technology
-+ [Subham Roy](https://github.com/syfluqs) , 1st year, Electronics and Communication, PEC University of Technology
-+ [Avi Dubey](https://www.facebook.com/avi.dubey.7) , 1st year, Electronics and Communication, PEC University of Technology
++ [Anshuman Chandel](https://www.facebook.com/anshuman.chandel1)
++ [Subham Roy](https://github.com/syfluqs)
++ [Avi Dubey](https://www.facebook.com/avi.dubey.7)
 
+![xpenz](http://i.imgur.com/LAKkdje.png)
 
 ##ABOUT
 
@@ -45,3 +46,39 @@ xpenz can keep track of transactions, display them according to categories or da
   directory containing xpenz.jar. Then run
 
     `java -jar "xpenz.jar"`
+    
+##STEP BY STEP EXPLANATION
+
+Ok, so lets go step by step
+
++ __Runing the `xpenz.jar` file__
+
+![Runing the `xpenz.jar` file](http://i.imgur.com/ZFi4sLJ.png)
+
++ __Select a profile and the main window will open__
+
+![main window](http://i.imgur.com/YDjCoho.png)
+
++ __OK, so lets make a new transaction__
+	
+![New Transaction Window](http://i.imgur.com/CPpXXWK.png)
+
++ __As you can see, the transaction gets reflected on the main window__
+
+![Main Window](http://i.imgur.com/yRs9ask.png)
+
++ __Do not forget to click `Save` on the toolbar__
+
+![Save](http://i.imgur.com/J3TCiYg.png)
+
++ __Lets, export all this to CSV format, which can be read by MS Excel or Libre Office. Click on File > Export to CSV__
+
+![Exporting](http://i.imgur.com/oT056Xg.png)
+
++ __Opening the CSV file in Libre Office...remember, patience is a virtue...__
+
+![Opening](http://i.imgur.com/jNhtAc2.png)
+
++ __...and... voila!__
+
+![voila](http://i.imgur.com/570K5o1.png)
