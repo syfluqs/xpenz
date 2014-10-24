@@ -2,9 +2,9 @@
 
 
 __by Team Black Hats__
-+ [Anshuman Chandel](https://www.facebook.com/anshuman.chandel1)
-+ [Subham Roy](https://github.com/syfluqs)
-+ [Avi Dubey](https://www.facebook.com/avi.dubey.7)
++ [Anshuman Chandel](https://www.facebook.com/anshuman.chandel1) , 1st year, Production and Manufacturing Engineering, PEC University of Technology
++ [Subham Roy](https://github.com/syfluqs) , 1st year, Electronics and Communication, PEC University of Technology
++ [Avi Dubey](https://www.facebook.com/avi.dubey.7) , 1st year, Electronics and Communication, PEC University of Technology
 
 
 ##ABOUT
