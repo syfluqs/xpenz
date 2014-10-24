@@ -718,7 +718,7 @@ private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private void jDialog2WindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_jDialog2WindowOpened
         try {
             // TODO add your handling code here:
-            BufferedReader readme = new BufferedReader(new FileReader("README.md"));
+            BufferedReader readme = new BufferedReader(new FileReader("README.txt"));
             String line;
             while((line = readme.readLine())!=null)
                jTextArea1.append(line+"\n");
