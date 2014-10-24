@@ -11,5 +11,5 @@ dateFormat = dd-MM-yyyy
 csvDelimiter = ,
 
 [reminders]
-reminders = true
-remindAtPercent = 85
+reminders = false
+remindAtPercent = 500
