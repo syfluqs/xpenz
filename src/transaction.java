@@ -14,7 +14,7 @@ public class transaction {
     
     public int i;
     public int index;
-    public Date date;
+    public String date;
     public String type;
     public double amount;
     public String category;
@@ -22,9 +22,9 @@ public class transaction {
     public String notes;
     
     
-    static public transaction[] trns = {new transaction(0,new Date(0,0,0),"abc",999.99,"abc",999999,"abc")}; //defining a sample transaction. use transaction index from 1 only.
+    static public transaction[] trns = {new transaction(0,"99-99-9999","abc",999.99,"abc",999999,"abc")}; //defining a sample transaction. use transaction index from 1 only.
     
-    public transaction(int index,Date date, String type, double amount, String category, long number, String notes)
+    public transaction(int index,String date, String type, double amount, String category, long number, String notes)
     {
         this.index=index;
         this.date=date; //using deprecated java.util.Date to save hassles

@@ -1,0 +1,15 @@
+[files]
+transactionFile = trans
+categoriesFile = categories
+
+[directories]
+dataDir = dat/
+profilesDir = profiles.d/
+
+[data]
+dateFormat = dd-MM-yyyy
+csvDelimiter = ,
+
+[reminders]
+reminders = true
+remindAtPercent = 85

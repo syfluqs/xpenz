@@ -36,8 +36,9 @@ public class trnsFile {
             if (tmp.length!=7)
                 throw new IOException("The transaction storage file has corrupt values on line "+i);
             //making new transaction objects for each line
-            String[] dateArr = tmp[1].split("-");
-            transaction.add(new transaction(Integer.parseInt(tmp[0]),new Date(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0])),(String)tmp[2],Double.parseDouble(tmp[3]),(String)tmp[4],tmp[5].equals("")?0000:Long.parseLong(tmp[5]),(String)tmp[6]));
+            //String[] dateArr = tmp[1].split("-");
+            //transaction.add(new transaction(Integer.parseInt(tmp[0]),new Date(Integer.parseInt(dateArr[2]),Integer.parseInt(dateArr[1]),Integer.parseInt(dateArr[0])),(String)tmp[2],Double.parseDouble(tmp[3]),(String)tmp[4],tmp[5].equals("")?0000:Long.parseLong(tmp[5]),(String)tmp[6]));
+            transaction.add(new transaction(Integer.parseInt(tmp[0]),tmp[1],(String)tmp[2],Double.parseDouble(tmp[3]),(String)tmp[4],tmp[5].equals("")?0000:Long.parseLong(tmp[5]),(String)tmp[6]));
             //incrementing line number
             i++;
         }

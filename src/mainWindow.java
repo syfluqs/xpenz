@@ -1,11 +1,15 @@
 
 import java.awt.Color;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,10 +27,13 @@ public class mainWindow extends javax.swing.JFrame {
      */
     
     static public mainWindow mw;
+    SimpleDateFormat df = new SimpleDateFormat(vars.dateFormat);
     
-    public mainWindow() {
+    public mainWindow() throws FileNotFoundException, IOException {
         initComponents();
         setLocationRelativeTo(null);
+        vars.init();
+        
     }
 
     /**
@@ -39,6 +46,10 @@ public class mainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         barChart = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        incomeOverview = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        expenseOverview = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         overviewPanel = new javax.swing.JPanel();
@@ -80,18 +91,56 @@ public class mainWindow extends javax.swing.JFrame {
         });
 
         barChart.setBackground(new java.awt.Color(255, 255, 255));
-        barChart.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Income vs Expenses: Current Month", 0, 0, null, new java.awt.Color(0, 0, 0)));
+        barChart.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Income vs Expenses: Current Month", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 0)));
+        barChart.setLayout(new javax.swing.BoxLayout(barChart, javax.swing.BoxLayout.LINE_AXIS));
 
-        javax.swing.GroupLayout barChartLayout = new javax.swing.GroupLayout(barChart);
-        barChart.setLayout(barChartLayout);
-        barChartLayout.setHorizontalGroup(
-            barChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        barChartLayout.setVerticalGroup(
-            barChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 342, Short.MAX_VALUE)
-        );
+        jScrollPane2.setBackground(new java.awt.Color(227, 255, 176));
+
+        incomeOverview.setBackground(new java.awt.Color(230, 255, 209));
+        incomeOverview.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(incomeOverview);
+
+        barChart.add(jScrollPane2);
+
+        jScrollPane3.setBackground(new java.awt.Color(255, 217, 217));
+
+        expenseOverview.setBackground(new java.awt.Color(255, 215, 215));
+        expenseOverview.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Amount", "Category"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Double.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(expenseOverview);
+        expenseOverview.getColumnModel().getColumn(0).setResizable(false);
+        expenseOverview.getColumnModel().getColumn(1).setResizable(false);
+        expenseOverview.getColumnModel().getColumn(2).setResizable(false);
+
+        barChart.add(jScrollPane3);
 
         jToolBar1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jToolBar1.setFloatable(false);
@@ -109,11 +158,11 @@ public class mainWindow extends javax.swing.JFrame {
         jToolBar1.add(jButton1);
 
         overviewPanel.setBackground(new java.awt.Color(255, 255, 255));
-        overviewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Overview", 0, 0, null, new java.awt.Color(0, 0, 0)));
+        overviewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true), "Overview", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 0)));
 
         jLabel1.setText("Grand Total");
 
-        grandtotalValue.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        grandtotalValue.setFont(new java.awt.Font("SansSerif", 1, 12));
         grandtotalValue.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         javax.swing.GroupLayout grandTotalLayout = new javax.swing.GroupLayout(grandTotal);
@@ -123,7 +172,7 @@ public class mainWindow extends javax.swing.JFrame {
             .addGroup(grandTotalLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addComponent(grandtotalValue, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         grandTotalLayout.setVerticalGroup(
@@ -137,42 +186,15 @@ public class mainWindow extends javax.swing.JFrame {
 
         weekOverview.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Date", "Type", "Amount", "Category", "Number", "Notes"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(weekOverview);
-        if (weekOverview.getColumnModel().getColumnCount() > 0) {
-            weekOverview.getColumnModel().getColumn(0).setResizable(false);
-            weekOverview.getColumnModel().getColumn(0).setPreferredWidth(15);
-            weekOverview.getColumnModel().getColumn(1).setResizable(false);
-            weekOverview.getColumnModel().getColumn(2).setResizable(false);
-            weekOverview.getColumnModel().getColumn(3).setResizable(false);
-            weekOverview.getColumnModel().getColumn(4).setResizable(false);
-            weekOverview.getColumnModel().getColumn(5).setResizable(false);
-        }
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 14));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("This Week");
 
@@ -180,8 +202,8 @@ public class mainWindow extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,9 +254,19 @@ public class mainWindow extends javax.swing.JFrame {
         jMenu2.add(jMenuItem3);
 
         jMenuItem4.setText("Budget Setup");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         jMenuItem5.setText("Settings");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
@@ -285,7 +317,7 @@ public class mainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(barChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(barChart, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
             .addComponent(overviewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -297,7 +329,7 @@ public class mainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(4, 4, 4)
                 .addComponent(overviewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -342,7 +374,9 @@ public class mainWindow extends javax.swing.JFrame {
         
         //populating date label
         Calendar cal = new GregorianCalendar();
-        dateLabel.setText("Week "+cal.get(Calendar.WEEK_OF_YEAR)+", Today: "+cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR));
+        //setting current week
+        vars.setCurWeek(cal.get(Calendar.WEEK_OF_YEAR));
+        dateLabel.setText("Week "+vars.week+", Today: "+cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR));
         
         jLabel1.setBackground(new Color(255,255,255,0));
         grandtotalValue.setBackground(new Color(255,255,255,0));
@@ -371,14 +405,72 @@ public class mainWindow extends javax.swing.JFrame {
         }
         
         //populating weekOverview table
+        DefaultTableModel wOtm = new DefaultTableModel(0,0);
+        weekOverview.setModel(wOtm);
+        //add headeer of the table
+        String header[] = new String[] { "Date", "Type", "Amount", "Category", "Number", "Notes" };
+        //add header in table model
+        wOtm.setColumnIdentifiers(header);
         
+        for (int i=1;i<=vars.lastIndex;i++)
+        {
+            try { cal.setTime(df.parse(transaction.trns[i].date)); } catch (ParseException ex) {}
+            if (cal.get(Calendar.WEEK_OF_YEAR)==vars.week)
+            {
+                    /*
+                    row.add(transaction.trns[i].date);
+                    row.add(transaction.trns[i].type);
+                    row.add(transaction.trns[i].amount);
+                    row.add(transaction.trns[i].category);
+                    row.add(transaction.trns[i].number);
+                    row.add(transaction.trns[i].notes);
+                    System.out.println(row.toArray()[2]);
+                    */
+                    wOtm.addRow(new Object[]{transaction.trns[i].date,transaction.trns[i].type,transaction.trns[i].amount,transaction.trns[i].category,transaction.trns[i].number,transaction.trns[i].notes,});
+                    weekOverview.updateUI();
+        }
+        }
+        
+        //populating incomeView
+        DefaultTableModel iOtm = new DefaultTableModel(0,0);
+        incomeOverview.setModel(iOtm);
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
         vars.setActiveTab(2);
-        new settings().setVisible(true);
+        try {
+            new settings().setVisible(true);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+// TODO add your handling code here:
+    vars.setActiveTab(0);
+        try {
+            new settings().setVisible(true);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+}//GEN-LAST:event_jMenuItem5ActionPerformed
+
+private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+// TODO add your handling code here:
+    vars.setActiveTab(4);
+        try {
+            new settings().setVisible(true);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+}//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -410,7 +502,13 @@ public class mainWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                mw = new mainWindow();
+                try {
+                    mw = new mainWindow();
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 mw.setVisible(true);
                 
                 //populating date label
@@ -421,8 +519,10 @@ public class mainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel barChart;
     private javax.swing.JLabel dateLabel;
+    private javax.swing.JTable expenseOverview;
     private javax.swing.JPanel grandTotal;
     private javax.swing.JLabel grandtotalValue;
+    private javax.swing.JTable incomeOverview;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -444,6 +544,8 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel overviewPanel;
     private javax.swing.JTable weekOverview;
